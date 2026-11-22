@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07090c">
+<title>ფილმები და წიგნები · კოლექცია</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+Georgian:wght@400;500;600;700&family=Noto+Serif+Georgian:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#07090c; --bg2:#0b0f14; --panel:#0f1419; --panel2:#151b22;
+  --line:rgba(239,233,221,.09); --line2:rgba(239,233,221,.2);
+  --text:#efe9dd; --soft:#cfc9bc; --muted:#a09b8f; --faint:#6e6b62;
+  --gold:#c9a45c; --gold2:#e6cf95; --goldsoft:rgba(201,164,92,.11); --goldline:rgba(201,164,92,.38);
+  --serif:"Noto Serif Georgian","Cormorant Garamond",Georgia,serif;
+  --display:"Cormorant Garamond","Noto Serif Georgian",Georgia,serif;
+  --sans:"Noto Sans Georgian",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --pad:clamp(18px,5vw,40px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(1000px 520px at 85% -120px,rgba(201,164,92,.13),transparent 70%),radial-gradient(800px 500px at -10% 10%,rgba(70,100,140,.12),transparent 70%)}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));z-index:60}
+
+.top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--display);font-size:1.25rem;font-weight:600;letter-spacing:.04em}
+.brand i{width:30px;height:30px;border:1px solid var(--goldline);border-radius:50%;display:grid;place-items:center;font-style:normal;color:var(--gold);font-size:.95rem}
+.tag{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+
+.hero{padding:clamp(34px,7vw,84px) 0 clamp(30px,5vw,56px)}
+.eyebrow{display:flex;align-items:center;gap:14px;font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.eyebrow::after{content:"";height:1px;width:64px;background:linear-gradient(90deg,var(--gold),transparent)}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.5rem,8.2vw,6rem);line-height:1.05;letter-spacing:-.02em;margin:22px 0 22px;
+  background:linear-gradient(180deg,#fbf6ea 0%,#d9c79a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{max-width:56ch;color:var(--muted);font-size:clamp(1rem,2.2vw,1.12rem);margin:0}
+.stats{display:flex;gap:clamp(22px,5vw,56px);margin-top:36px;flex-wrap:wrap}
+.stat b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(2.1rem,5vw,3rem);line-height:1;color:var(--gold2)}
+.stat span{display:block;margin-top:6px;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+
+.wall{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-end;overflow-x:auto;scroll-snap-type:x proximity;padding:8px var(--pad) 22px;margin:34px 0 0;scrollbar-width:none}
+.wall::-webkit-scrollbar{display:none}
+@media (min-width:1260px){.wall{padding-left:calc((100vw - 1180px)/2 + var(--pad));padding-right:var(--pad)}}
+.mini{flex:none;scroll-snap-align:start;border:0;padding:0;background:none;cursor:pointer;height:clamp(150px,22vw,210px);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.mini:hover{transform:translateY(-8px)}
+.mini .poster{height:100%;box-shadow:0 14px 34px rgba(0,0,0,.55)}
+
+.toolbar{position:sticky;top:0;z-index:50;padding:12px 0;background:rgba(7,9,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.toolbar .wrap{display:flex;gap:14px;align-items:center;justify-content:space-between}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 calc(var(--pad) * -1);padding:2px var(--pad)}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font-size:.86rem;color:var(--muted);background:transparent;border:1px solid var(--line2);padding:7px 17px;border-radius:999px;cursor:pointer;transition:.2s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:var(--goldline)}
+.chip[aria-pressed="true"]{color:#15110a;background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:transparent;font-weight:600}
+.search{position:relative;flex:0 1 280px;min-width:0}
+.search input{width:100%;font:inherit;font-size:.9rem;color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:999px;padding:8px 16px 8px 40px;outline:none;transition:.2s}
+.search input::placeholder{color:var(--faint)}
+.search input:focus{border-color:var(--goldline);box-shadow:0 0 0 3px var(--goldsoft)}
+.search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--faint);fill:none;stroke-width:2;stroke-linecap:round}
+
+.poster{position:relative;aspect-ratio:2/3;border-radius:6px;overflow:hidden;background:linear-gradient(160deg,#1b2530,#0b0f14);isolation:isolate}
+.poster .pbg{position:absolute;inset:-25%;background-size:cover;background-position:center;filter:blur(28px) saturate(1.25) brightness(.5);opacity:0;transition:opacity .6s;z-index:-1}
+.poster.has .pbg{opacity:1}
+.poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.poster .pph{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.35))}
+.poster .pph b{position:absolute;top:6px;left:12px;font-family:var(--display);font-size:3.6rem;font-weight:600;line-height:1;color:rgba(201,164,92,.22)}
+.poster .pph em{font-style:normal;font-family:var(--serif);font-weight:600;color:var(--gold2);font-size:.82rem;line-height:1.35}
+.poster.has .pph{display:none}
+.poster::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);pointer-events:none}
+
+main{position:relative;z-index:1}
+.entry{display:grid;grid-template-columns:minmax(240px,340px) 1fr;gap:clamp(34px,6vw,76px);padding:clamp(54px,8vw,96px) 0;border-bottom:1px solid var(--line)}
+.entry[hidden]{display:none}
+.pcol{position:sticky;top:96px;align-self:start;min-width:0}
+.info{min-width:0}
+.pcol .poster.wide{width:100%}
+.pcol .poster{width:100%;box-shadow:0 30px 70px -10px rgba(0,0,0,.75),0 0 0 1px var(--line)}
+.topline{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.idx{font-family:var(--display);font-weight:500;font-style:italic;font-size:1.7rem;color:var(--gold);line-height:1}
+.badge{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--gold2);border:1px solid var(--goldline);background:var(--goldsoft);padding:4px 13px;border-radius:999px}
+h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,4.2vw,3.1rem);line-height:1.18;letter-spacing:-.01em;margin:0 0 26px;text-wrap:balance}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin:0 0 30px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fact{padding:16px 20px 16px 0}
+.fact+.fact{padding-left:20px;border-left:1px solid var(--line)}
+.fact dt{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:4px}
+.fact dd{margin:0;font-family:var(--serif);font-size:1.05rem;color:var(--text);line-height:1.5}
+.plot{font-family:var(--serif);color:var(--soft);line-height:2.05;margin:0;max-width:68ch;font-size:1.02rem;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+.plot.open{display:block}
+.more{font-size:.84rem;letter-spacing:.06em;color:var(--gold);background:none;border:0;padding:10px 0 0;cursor:pointer}
+.more:hover{color:var(--gold2)}
+
+.quotes{margin-top:40px}
+.quotes blockquote{margin:0 0 18px;padding:2px 0 2px 20px;border-left:2px solid var(--goldline);max-width:68ch}
+.quotes blockquote p{margin:0;font-family:var(--serif);font-size:1.12rem;line-height:1.75;color:var(--text)}
+.quotes cite{display:block;margin-top:4px;font-style:italic;font-family:var(--display);font-size:1.02rem;color:var(--muted)}
+
+.q{margin-top:40px}
+.qhead{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.qhead h3{margin:0;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.count{font-family:var(--display);font-size:1.15rem;color:var(--gold2)}
+.qline{flex:1;height:1px;background:var(--line)}
+.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;padding:4px var(--pad) 14px;margin:0 calc(var(--pad) * -1);scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+.strip::-webkit-scrollbar{height:6px}.strip::-webkit-scrollbar-thumb{background:var(--line2);border-radius:6px}
+.tile{position:relative;flex:none;scroll-snap-align:start}
+.thumb{display:block;padding:0;width:136px;height:182px;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:var(--panel2);cursor:zoom-in;transition:.3s cubic-bezier(.2,.7,.2,1);position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .5s}
+.thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.45))}
+.thumb:hover{border-color:var(--gold);transform:translateY(-4px)}
+.thumb:hover img{transform:scale(1.05)}
+.tile .n{position:absolute;left:9px;bottom:6px;z-index:2;font-family:var(--display);font-size:1.05rem;color:var(--gold2);pointer-events:none}
+.del{position:absolute;top:6px;right:6px;z-index:3;width:26px;height:26px;border-radius:50%;border:0;background:rgba(7,9,12,.88);color:#fff;font-size:16px;line-height:1;cursor:pointer;opacity:0;transition:.15s}
+.tile:hover .del,.del:focus-visible{opacity:1}
+.add{flex:none;scroll-snap-align:start;width:136px;height:182px;border:1px dashed var(--goldline);border-radius:8px;background:transparent;color:var(--gold);font-size:.8rem;letter-spacing:.04em;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.add:hover{background:var(--goldsoft)}
+.add i{font-style:normal;font-family:var(--display);font-size:2rem;line-height:1}
+.hint{align-self:center;margin:0 6px 0 0;color:var(--faint);font-size:.88rem;flex:none}
+
+.empty{display:none;text-align:center;color:var(--muted);padding:90px 0;position:relative;z-index:1}
+.empty.show{display:block}
+footer{position:relative;z-index:1;padding:44px 0 60px;color:var(--faint);font-size:.82rem}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+
+dialog{border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;width:100vw;height:100dvh;color:#fff}
+dialog::backdrop{background:rgba(3,5,7,.96)}
+.lb{position:absolute;inset:0;display:flex;overflow:auto;padding:64px 64px 70px;-webkit-overflow-scrolling:touch}
+.lb img{margin:auto;max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;box-shadow:0 30px 90px rgba(0,0,0,.7);cursor:zoom-in}
+.zoomed .lb img{max-width:none;max-height:none;width:190%;cursor:zoom-out}
+.lbtn{position:absolute;z-index:3;border:1px solid var(--line2);background:rgba(15,20,25,.9);color:#fff;border-radius:50%;cursor:pointer;width:46px;height:46px;font-size:1.3rem;display:grid;place-items:center;transition:.2s}
+.lbtn:hover{border-color:var(--gold);color:var(--gold2)}
+.lbtn.prev{left:16px;top:50%;transform:translateY(-50%)}
+.lbtn.next{right:16px;top:50%;transform:translateY(-50%)}
+.lbtn.close{right:16px;top:14px}
+.lbtn[disabled]{display:none}
+.lbar{position:absolute;z-index:3;left:0;right:0;bottom:16px;text-align:center;font-size:.82rem;color:var(--muted);letter-spacing:.08em;pointer-events:none}
+.lbar b{font-family:var(--display);font-weight:600;font-size:1.05rem;color:var(--gold2)}
+
+@media (max-width:860px){
+  .entry{grid-template-columns:1fr;gap:30px;padding:48px 0 54px}
+  .pcol{position:static;display:flex;justify-content:center}
+  .pcol .poster{width:min(100%,260px);height:auto;margin:0 auto}
+  .pcol .poster.wide{width:min(100%,440px)}
+  .toolbar .wrap{flex-direction:column;align-items:stretch;gap:10px}
+  .search{flex:none;width:100%}
+  .chips{order:2}
+  .plot{-webkit-line-clamp:6}
+  .facts{grid-template-columns:1fr 1fr}
+  .fact{padding-right:12px}.fact+.fact{padding-left:16px}
+  .thumb,.add{width:124px;height:166px}
+  .del{opacity:1}
+  .lb{padding:60px 8px 64px}
+  .lbtn{width:42px;height:42px}
+  .lbtn.prev{left:6px}.lbtn.next{right:6px}
+  .zoomed .lb img{width:230%}
+}
+@media (max-width:480px){
+  .top{padding:16px 0}
+  .tag{display:none}
+  .facts{grid-template-columns:1fr}
+  .fact+.fact{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  footer .wrap{flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.js .reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><i>&#10022;</i><span>Kolekcia</span></div>
+    <span class="tag">ლიტერატურა · კინო</span>
+  </div>
+  <header class="hero">
+    <span class="eyebrow">პირადი კოლექცია</span>
+    <h1>ფილმები<br>და წიგნები</h1>
+    <p class="lead">ავტორი, რეჟისორი, გამოსვლის წელი, მოკლე შინაარსი და ციტატები თითოეული ნაწარმოებისთვის, კითხვებით და ფოტოებით ერთ ადგილას.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+</div>
+
+<div class="wall" id="wall" aria-label="ნაწარმოებების ყდები"></div>
+
+<div class="toolbar">
+  <div class="wrap">
+    <div class="chips" id="chips" role="group" aria-label="ფილტრი"></div>
+    <label class="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="ძებნა სახელით, ავტორით ან რეჟისორით" aria-label="ძებნა">
+    </label>
+  </div>
+</div>
+
+<div class="wrap">
+  <main id="list"></main>
+  <p class="empty" id="empty">არაფერი მოიძებნა.</p>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>ატვირთული ფოტოები ინახება ამ ბრაუზერში და რჩება გვერდის განახლების შემდეგაც.</span>
+    <span>საჯარო გამოსაქვეყნებლად ფოტოები images/ საქაღალდეში ჩადე.</span>
+  </div>
+</footer>
+
+<dialog id="lb" aria-label="ფოტოს ნახვა">
+  <div class="lb"><img alt=""></div>
+  <button class="lbtn prev" id="lprev" type="button" aria-label="წინა">&#8249;</button>
+  <button class="lbtn next" id="lnext" type="button" aria-label="შემდეგი">&#8250;</button>
+  <button class="lbtn close" id="lclose" type="button" aria-label="დახურვა">&#10005;</button>
+  <div class="lbar" id="lbar"></div>
+</dialog>
+
+<script>
+document.documentElement.classList.add("js");
+
+/* ============================================================
+   მთელი შინაარსი აქ არის. ახალი ჩანაწერისთვის დააკოპირე ერთი ბლოკი.
+   slug = საქაღალდის სახელი images/ -ში (ლათინური ასოებით)
+     images/<slug>/cover.jpg        ყდა/პოსტერი (სურვილისამებრ)
+     images/<slug>/q1.jpg, q2.jpg…  კითხვების ფოტოები (ზედიზედ დანომრილი; .png-ც შეიძლება)
+   director  = რეჟისორი (მხოლოდ ფილმებისთვის, სურვილისამებრ)
+   authorLabel = „ავტორი“-ს ნაცვლად სხვა წარწერა (სურვილისამებრ)
+   quotes    = [{ ka:"ქართული ტექსტი", en:"ორიგინალი (სურვილისამებრ)" }]
+   წელი ცარიელია? მაშინ საიტზე არ გამოჩნდება.
+   ============================================================ */
+const ITEMS = [
+  {
+    slug:"old-man-and-the-sea", type:"წიგნი",
+    title:"მოხუცი და ზღვა", author:"ერნესტ ჰემინგუეი", year:"1952",
+    plot:"კუბელი მოხუცი მეთევზე სანტიაგო 84 დღეა ერთ თევზსაც ვერ იჭერს და სხვები უკვე წარუმატებლად თვლიან. პატარა მანოლინი, რომელსაც ის თევზჭერას ასწავლიდა, მასთან ერთად ვეღარ დადის, მაგრამ მაინც ყოველდღე ეხმარება. ოთხმოცდახუთე დღეს სანტიაგო მარტო გადის ღია ზღვაში და უზარმაზარ მარლინს წამოეგება. სამი დღე და ღამე ებრძვის თევზს პატარა ნავში, მაგრამ დაბრუნების გზაზე ზვიგენები მის დაჭერილ თევზს თანდათან შეჭამენ და ნაპირზე მხოლოდ ჩონჩხი მიაქვს. ნაწარმოები ადამიანის გამძლეობაზე, სიამაყესა და დამარცხებაში შენარჩუნებულ ღირსებაზეა.",
+    quotes:[
+      { ka:"ადამიანის განადგურება შეიძლება, დამარცხება კი არა.", en:"A man can be destroyed but not defeated." },
+      { ka:"იმედის არქონა სისულელეა.", en:"It is silly not to hope." }
+    ]
+  },
+  {
+    slug:"dead-poets-society", type:"ფილმი",
+    title:"მკვდარი პოეტების საზოგადოება", director:"პიტერ უირი", authorLabel:"სცენარი", author:"ტომ შულმანი", year:"1989",
+    plot:"მოქმედება 1959 წელს, ელიტარულ და მკაცრ ბიჭების სკოლაში, უელტონის აკადემიაში ხდება. ახალი მასწავლებელი ჯონ კიტინგი (რობინ უილიამსი) მოსწავლეებს პოეზიას სხვანაირად ასწავლის და მოუწოდებს, ისარგებლონ ყოველი დღით და საკუთარი ხმით იფიქრონ. ბიჭები ფარულად აღადგენენ „მკვდარი პოეტების საზოგადოებას“ და მღვიმეში ხვდებიან პოეზიის საკითხავად. მათ შორის ნილ პერი თეატრზე ოცნებობს, მაგრამ მამამისს სხვა გეგმები აქვს. კონფლიქტი ტრაგიკულად მთავრდება და სკოლა დანაშაულს მასწავლებელს აკისრებს.",
+    quotes:[
+      { ka:"ისარგებლე წუთით. ისარგებლეთ დღით.", en:"Carpe diem. Seize the day." }
+    ]
+  },
+  {
+    slug:"the-last-leaf", type:"მოთხრობა",
+    title:"უკანასკნელი ფოთოლი", author:"ო. ჰენრი (უილიამ სიდნი პორტერი)", year:"1907",
+    plot:"ნიუ-იორკის ხელოვანთა უბანში ახალგაზრდა მხატვარი ჯონსი ფილტვების ანთებით ავადდება. ის დარწმუნებულია, რომ ფანჯრიდან მოჩანი სურო, რომლის ფოთლებიც ყოველდღე ცვივა, უკანასკნელი ფოთლის ჩამოვარდნისთანავე მოკვდება. მისი დაქალი სიუ მეზობელ მოხუც მხატვარ ბერმანს მიმართავს. ხანგრძლივი ქარისა და წვიმის მიუხედავად ერთი ფოთოლი კედელზე რჩება და ჯონსის სიცოცხლის სურვილს უბრუნებს. მოგვიანებით ირკვევა, რას შეეწირა ბერმანი და რა იყო ეს ფოთოლი სინამდვილეში.",
+    quotes:[
+      { ka:"სიკვდილის სურვილი ცოდვაა.", en:"It is a sin to want to die." },
+      { ka:"მთელ ქვეყანაზე ყველაზე მარტოსული სული ის არის, რომელიც თავის იდუმალ, შორეულ მოგზაურობას ემზადება.", en:"The lonesomest thing in all the world is a soul when it is making ready to go on its mysterious, far journey." }
+    ]
+  },
+  {
+    slug:"12-angry-men", type:"ფილმი",
+    title:"12 განრისხებული მამაკაცი", director:"სიდნი ლიუმეტი", authorLabel:"ორიგინალის ავტორი", author:"რეჯინალდ როუზი", year:"1957",
+    plot:"თორმეტი ნაფიცი მსაჯული ერთ ოთახში იკეტება, რომ გადაწყვიტოს, დამნაშავეა თუ არა 18 წლის ბიჭი, რომელსაც მამის მკვლელობას ედავებიან. პირველივე კენჭისყრაზე თერთმეტი „დამნაშავეს“ ამბობს და მხოლოდ მერვე ნაფიცი (ჰენრი ფონდა) ითხოვს საქმეზე საუბარს, რადგან გონივრული ეჭვი აქვს. ნელ-ნელა ირღვევა მოწმეთა ჩვენებები, ყველას თავისი ცრურწმენები, განწყობები და პირადი ისტორიები იჩენს თავს. ფილმი თითქმის მთლიანად ერთ ოთახში ვითარდება. ორიგინალი სატელევიზიო პიესა 1954 წელს დაიწერა.",
+    quotes:[
+      { ka:"ცრურწმენა სიმართლეს ყოველთვის ფარავს.", en:"Prejudice always obscures the truth." }
+    ]
+  },
+  {
+    slug:"noes-shvili", type:"მოთხრობა",
+    title:"ნოეს შვილი", author:"ერიკ-ემანუელ შმიტი (ქართულად თარგმნა მერაბ ფიფიამ)", year:"2004",
+    plot:"ამბავს თხრობს ჟოზეფი, ებრაელი ბიჭი, რომელიც ომის დროს ბელგიაში, მამა პონის მფარველობის ქვეშ ცხოვრობს. მშობლებმა ის სამი წლის წინ უცხო ადამიანებს მიანდეს, რომ დაეცვათ. ყოველ კვირადღეს ბავშვები „ყვითელი ვილას“ ეზოში გამოჰყავთ და ათი ნაბიჯი უნდა გაიარონ ხალხის წინ, თითქოს აუქციონზე იყვნენ გამოფენილი. ჟოზეფი იმედოვნებს, რომ ვინმე შორიდან მოსულ მშობლებს ამოიცნობს. ომი სრულდება, იმედი კი არ ცოცხლდება და ბიჭს დანაშაულის გრძნობა უჩნდება: იქნებ მშობლები უკვე აღარ არიან ცოცხლები.",
+    quotes:[
+      { ka:"ერთი შემობრუნება და ათი ნაბიჯი იმისათვის, რომ გაქრე!" },
+      { ka:"ომის დამთავრებასთან ერთად იმედებისა და ილუზიების ხანაც დასრულდა." },
+      { ka:"იქნებ, სულაც არ იყო მათი ბრალი? იქნებ, აღარც იყვნენ ცოცხლები?" }
+    ]
+  },
+  {
+    slug:"sikvarulis-msxverpli", type:"მოთხრობა",
+    title:"სიყვარულის მსხვერპლი", author:"ო. ჰენრი (ადაპტირებული ტექსტი)", year:"",
+    plot:"პროვინციიდან ნიუ-იორკში ჩამოსული ჯო და დელია ხელოვნების შესასწავლად სტუდიაში ერთმანეთს შეხვდნენ, შეუყვარდათ და დაქორწინდნენ. ჯო მხატვარია, დელია მუსიკას სწავლობს. სანამ ფული ჰქონდათ, ბედნიერები იყვნენ, მაგრამ მალე ფული გაუთავდათ და გაკვეთილების გადახდა ვეღარ შეძლეს. დელია ჯოს ეუბნება, რომ გენერალ პინქნეის ქალიშვილს მუსიკას ასწავლის, ჯო კი ამბობს, რომ ობელისკიანი აკვარელი ვიღაც პეორიელს მიჰყიდა. ორივე ცდილობს, მეორეს თავისი სწავლა არ შეაწყვეტინოს. სინამდვილეში ორივე იმავე სამრეცხაოში მუშაობს, ჯო ცეცხლფარეშია, დელია კი უთოს აკეთებს და ხელს იწვავს. ბოლოს სიმართლე ვლინდება. მოთხრობის მთავარი აზრი ისაა, რომ როცა ადამიანს ხელოვნება უყვარს, მისთვის არაფერია მსხვერპლი.",
+    quotes:[
+      { ka:"როცა ხელოვნება გიყვარს, არცერთი მსხვერპლი არ გეჩვენება ძალიან მძიმედ.", en:"When one loves one's Art no service seems too hard." },
+      { ka:"ხელოვნება მომხიბვლელი ქალბატონია.", en:"Art is an engaging mistress." }
+    ]
+  },
+  {
+    slug:"nineteen-eighty-four", type:"წიგნი",
+    title:"1984", author:"ჯორჯ ორუელი (ერიკ არტურ ბლერი)", year:"1949",
+    plot:"მოქმედება ტოტალიტარულ სახელმწიფო ოკეანიაში ხდება, სადაც მმართველი პარტია და მისი ლიდერი, დიდი ძმა, ყველაფერს აკონტროლებს: ადამიანების სიტყვას, ფიქრსა და წარსულსაც კი. უინსტონ სმიტი სიმართლის სამინისტროში მუშაობს და ძველ გაზეთებს ისე ასწორებს, რომ პარტია ყოველთვის მართალი იყოს. ყოველი ოთახის კედელზე ტელეეკრანია, რომელიც ხალხს უთვალთვალებს. უინსტონი ფარულად დღიურს იწყებს, შეუყვარდება ახალგაზრდა ჯულია და ორივე პარტიის წინააღმდეგ ბრძოლას ოცნებობს. მათ დახმარებას სახელმწიფოს მაღალჩინოსანი ო'ბრაიენი ჰპირდება, მაგრამ დაპატიმრებისა და წამების შემდეგ უინსტონს სასტიკი ფინალი ელოდება. წიგნი გვაფრთხილებს, რა სახიფათოა ძალაუფლება, რომელიც სიმართლეს თავის სასარგებლოდ ცვლის.",
+    quotes:[
+      { ka:"ომი მშვიდობაა. თავისუფლება მონობაა. უმეცრება ძალაა.", en:"War is peace. Freedom is slavery. Ignorance is strength." },
+      { ka:"ვინც წარსულს აკონტროლებს, ის მომავალსაც აკონტროლებს; ვინც აწმყოს აკონტროლებს, ის წარსულს აკონტროლებს.", en:"Who controls the past controls the future: who controls the present controls the past." },
+      { ka:"თავისუფლება ნიშნავს თავისუფლებას თქვა, რომ ორჯერ ორი ოთხია.", en:"Freedom is the freedom to say that two plus two make four." }
+    ]
+  },
+  {
+    slug:"animal-farm", type:"წიგნი",
+    title:"ცხოველების ფერმა", author:"ჯორჯ ორუელი (ერიკ არტურ ბლერი)", year:"1945",
+    plot:"ერთ ინგლისურ ფერმაში ცხოველები მფლობელს, მისტერ ჯონსს, აუჯანყდებიან და ფერმას თავად იკავებენ. ფერმას „ცხოველების ფერმას“ არქმევენ და კედელზე შვიდ მცნებას წერენ, რომელთა მთავარი აზრია, რომ ყველა ცხოველი თანასწორია. მალე ხელისუფლებისთვის ბრძოლას ორი ღორი, ნაპოლეონი და სნოუბოლი, იწყებს. ნაპოლეონი ძაღლების დახმარებით სნოუბოლს ფერმიდან აძევებს და მთელ ძალაუფლებას იღებს. გულწრფელი და შრომისმოყვარე ცხენი ბოქსერი დაუღალავად მუშაობს, ღორები კი თანდათან მცნებებს თავიანთი სასარგებლოდ ცვლიან და ადამიანებს ემსგავსებიან. ეს ალეგორიული ზღაპარია ტოტალიტარიზმზე, ტყუილზე და რევოლუციის ღალატზე.",
+    quotes:[
+      { ka:"ყველა ცხოველი თანასწორია, მაგრამ ზოგი ცხოველი სხვებზე უფრო თანასწორია.", en:"All animals are equal, but some animals are more equal than others." },
+      { ka:"ოთხი ფეხი კარგია, ორი ფეხი ცუდია.", en:"Four legs good, two legs bad." }
+    ]
+  },
+  {
+    slug:"mateo-falcone", type:"მოთხრობა",
+    title:"მატეო ფალკონე", author:"პროსპერ მერიმე", year:"1829",
+    plot:"მოქმედება კორსიკაზე ხდება. მატეო ფალკონე ცნობილი და პატივცემული კაცია, მისი ათი წლის ვაჟი ფორტუნატო კი მამის სიამაყეა. ერთხელ, როცა მატეო სახლში არ არის, ბიჭი დაჭრილ ბანდიტ ჯიანეტო სანპიეროს შეხვდება, რომელსაც ჯარისკაცები მისდევენ. ფორტუნატო მას თივის ზვინში მალავს. სახლთან ჯარისკაცების უფროსი, ათისთავი გამბა, მოდის და ბიჭს ვერცხლის საათს ჰპირდება, თუ ბანდიტის ადგილს გაუმხელს. ბავშვი ცდუნებას ვერ უძლებს და ზვინზე მიუთითებს. დაბრუნებული მატეო ხვდება, რა მოხდა, და ვაჟს ღალატს არ პატიობს. ის ბიჭს ხევში მიჰყავს, ლოცვის წაკითხვას უბრძანებს და თოფით კლავს. მოთხრობა პატივის, მამობისა და სასტიკი მორალური კანონის ტრაგედიაა.",
+    quotes:[
+      { ka:"მაშინ ეს ბიჭი პირველია, რომელმაც ღალატი ჩაიდინა ჩვენს გვარში." },
+      { ka:"თავი დამანებე! მე მამა ვარ!" }
+    ]
+  },
+  {
+    slug:"chanchura", type:"მოთხრობა",
+    title:"ჩანჩურა", author:"მიხეილ ჯავახიშვილი", year:"",
+    plot:"ჩანჩურა თბილისის ბაზარში მცხოვრები მუნჯი ჯუჯაა, რომელსაც მთელი ბაზარი იცნობს. ყასბებისთვის და ბაზრის ხალხისთვის მისი ჩხუბი ყასბის ბიჭ არტუშასა და მის მეგობარ ძაღლ მურასთან ყოველდღიური გასართობია. ზაფხულის ცხელ დღეს არტუშა ჯიხურიდან სისხლიან ფილტვს აიღებს და ქუჩაში ისვრის. ჩანჩურა და მურა მას ეცემიან. ხალხი ეზოდან ქუჩაში გამოდის, ეს სცენა ცირკად მიაჩნია და სიცილით უყურებს. ჩანჩურა ბოლომდე იბრძვის, მაგრამ მურა ძლიერია. ბოლოს მურას გამარჯვებას ულოცავენ, დამარცხებული და სისხლში გასვრილი ჩანჩურა კი ადგება და ხალხს უყურებს. მოთხრობა ადამიანის დამცირებასა და ბრბოს სისასტიკეზეა.",
+    quotes:[
+      { ka:"თავის სიცოცხლეში პირველად ამოიოხრა ადამიანურად." },
+      { ka:"ჩანჩურა კი ცრემლებს იწმენდდა და მურასავით წკმუტუნებდა." }
+    ]
+  },
+  {
+    slug:"sakdari", type:"მოთხრობა",
+    title:"საყდარი", author:"გურამ გეგეშიძე", year:"",
+    plot:"მტრის მიერ აკლებული მონასტრიდან გამოქცეული მოხუცი ბერი ანთიმოზი და ახალგაზრდა ბერი იოანე ერთ მიკარგულ ხეობას შეაფარებენ თავს. ანთიმოზი ოდესღაც კალატოზი ყოფილა და ახლა თავის ხელოსნობას იოანეს ასწავლის. იოანე გადაწყვეტს, ამ მიკარგულ ადგილას პატარა საყდარი ააგოს, თუმცა იცის, რომ იქ ახლა ლოცვა არავის დასჭირდება. იგი სამუშაოს მარტო აგრძელებს და ანთიმოზი კვდება. მარტოდმარტო დარჩენილ იოანეს ერთ ღამეს სიკვდილი ეწვევა და სთხოვს, საყდარი დაანგრიოს. იოანე უარს ამბობს. გადის საუკუნეები, მიტოვებულ ადგილზე კი მისი აშენებული პატარა საყდარი ადამიანის ნების, შრომისა და იმედის უტყვ მოწმედ დგას.",
+    quotes:[
+      { ka:"როგორ შეიძლება, შენს წიაღში რაიმე წარმოიშვას, შენ ხომ არარაობა ხარ?" },
+      { ka:"შენ სიცოცხლე გძულს, სიკვდილო, და ამიტომ მირჩევ დანგრევას." }
+    ]
+  },
+  {
+    slug:"jojoxetis-suratebi", type:"მოთხრობა",
+    title:"ჯოჯოხეთის სურათები", author:"აკუტაგავა რიუნოსკე (ქართულად თარგმნა ო. გოგიჩაიშვილმა; ადაპტირებული ტექსტი)", year:"1918",
+    plot:"ხელოვანი ესიხიდე ძველი იაპონიის უდიდებულესი მხატვარია. მისი მბრძანებელი სთხოვს, ჯოჯოხეთის სურათებით მოხატული თეჯირი დახატოს. მხატვარი პასუხობს, რომ მხოლოდ იმის დახატვა შეუძლია, რაც საკუთარი თვალით უნახავს. ის ითხოვს, მის წინ ეტლი დაწვან, რომელშიც ქალი ზის, რათა ცეცხლის ჯოჯოხეთი დაინახოს. მბრძანებელი თანხმდება. დანიშნულ ღამეს ეტლი ცეცხლს უკიდებენ და ესიხიდე გაქვავებული უყურებს, რადგან ეტლში მისი ერთადერთი ქალიშვილი ზის. თეჯირს იგი უკანასკნელ შტრიხამდე დახატავს, ამის შემდეგ კი თავს იკლავს. ეს ამბავი ხელოვნებასა და ადამიანურ სისასტიკეზე, შემოქმედის ტრაგედიასა და სრულყოფილებისკენ სწრაფვის ფასზეა.",
+    quotes:[
+      { ka:"მე არასოდეს არ შემიძლია იმის დახატვა, რაც არ მინახავს." }
+    ]
+  }
+];
+
+/* ---------- დამხმარეები ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad = n => String(n).padStart(2, "0");
+
+/* ---------- მუდმივი საცავი: ატვირთული ფოტოები რჩება ბრაუზერში ---------- */
+const dbp = new Promise((res, rej) => {
+  try {
+    const r = indexedDB.open("film-book-photos", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("photos", { keyPath: "id", autoIncrement: true }).createIndex("slug", "slug");
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  } catch (e) { rej(e); }
+});
+const store = mode => dbp.then(db => db.transaction("photos", mode).objectStore("photos"));
+const wrapReq = r => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+const dbAdd  = async (slug, blob) => wrapReq((await store("readwrite")).add({ slug, blob, t: Date.now() }));
+const dbList = async slug => wrapReq((await store("readonly")).index("slug").getAll(slug));
+const dbDel  = async id => wrapReq((await store("readwrite")).delete(id));
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+
+/* ---------- ყდა ---------- */
+const coverCache = {};
+function coverFor(item){
+  return coverCache[item.slug] || (coverCache[item.slug] = new Promise(res => {
+    const t = (src, fail) => { const i = new Image(); i.onload = () => res({ src, ratio: i.naturalWidth / i.naturalHeight }); i.onerror = fail; i.src = src; };
+    t(`images/${item.slug}/cover.jpg`, () => t(`images/${item.slug}/cover.png`, () => res(null)));
+  }));
+}
+function poster(item, i){
+  const p = el("div", "poster");
+  p.innerHTML = `<div class="pbg"></div><div class="pph"><b>${pad(i + 1)}</b><em>${esc(item.title)}</em></div>`;
+  coverFor(item).then(c => {
+    if (!c) return;
+    const img = new Image(); img.alt = item.title; img.src = c.src;
+    p.insertBefore(img, p.querySelector(".pph"));
+    $(".pbg", p).style.backgroundImage = `url("${c.src}")`;
+    p.style.aspectRatio = Math.min(Math.max(c.ratio, .62), 1.5);
+    p.classList.add("has");
+    p.classList.toggle("wide", c.ratio > 1);
+  });
+  return p;
+}
+
+/* ---------- ფოტოების მნახველი ---------- */
+const lb = $("#lb"), lbImg = $("img", lb), lbar = $("#lbar"), lprev = $("#lprev"), lnext = $("#lnext");
+let lbList = [], lbIdx = 0, lbTitle = "";
+function showLb(){
+  lb.classList.remove("zoomed");
+  lbImg.src = lbList[lbIdx];
+  lbar.innerHTML = `${esc(lbTitle)} &nbsp;·&nbsp; <b>${lbIdx + 1}</b> / ${lbList.length}`;
+  lprev.disabled = lbIdx === 0; lnext.disabled = lbIdx === lbList.length - 1;
+}
+function openLb(list, i, title){ lbList = list; lbIdx = i; lbTitle = title; showLb(); lb.showModal(); }
+const go = d => { const n = lbIdx + d; if (n >= 0 && n < lbList.length) { lbIdx = n; showLb(); } };
+lprev.onclick = () => go(-1); lnext.onclick = () => go(1);
+$("#lclose").onclick = () => lb.close();
+lbImg.onclick = e => { e.stopPropagation(); lb.classList.toggle("zoomed"); };
+lb.addEventListener("click", e => { if (e.target === lb || e.target.classList.contains("lb")) lb.close(); });
+lb.addEventListener("keydown", e => { if (e.key === "ArrowLeft") go(-1); if (e.key === "ArrowRight") go(1); });
+let sx = null;
+lb.addEventListener("touchstart", e => { sx = e.touches.length === 1 ? e.touches[0].clientX : null; }, { passive: true });
+lb.addEventListener("touchend", e => {
+  if (sx === null || lb.classList.contains("zoomed")) return;
+  const dx = e.changedTouches[0].clientX - sx; sx = null;
+  if (Math.abs(dx) > 55) go(dx < 0 ? 1 : -1);
+});
+
+/* ---------- ციტატების ბლოკი ---------- */
+function quotesHtml(item){
+  if (!item.quotes || !item.quotes.length) return "";
+  const rows = item.quotes.map(x =>
+    `<blockquote><p>„${esc(x.ka)}“</p>${x.en ? `<cite>${esc(x.en)}</cite>` : ""}</blockquote>`
+  ).join("");
+  return `<div class="quotes"><div class="qhead"><h3>ციტატები</h3><span class="count">${pad(item.quotes.length)}</span><span class="qline"></span></div>${rows}</div>`;
+}
+
+/* ---------- ჩანაწერის აგება ---------- */
+function build(item, i){
+  const sec = el("section", "entry reveal");
+  sec.id = "e" + i; sec.dataset.type = item.type;
+  sec.dataset.search = (item.title + " " + item.author + " " + (item.director || "")).toLowerCase();
+
+  const facts = [];
+  if (item.director) facts.push(`<div class="fact"><dt>რეჟისორი</dt><dd>${esc(item.director)}</dd></div>`);
+  if (item.author)   facts.push(`<div class="fact"><dt>${esc(item.authorLabel || "ავტორი")}</dt><dd>${esc(item.author)}</dd></div>`);
+  if (item.year)     facts.push(`<div class="fact"><dt>წელი</dt><dd>${esc(item.year)}</dd></div>`);
+
+  sec.innerHTML = `
+    <div class="pcol"></div>
+    <div class="info">
+      <div class="topline"><span class="idx">${pad(i + 1)}</span><span class="badge">${esc(item.type)}</span></div>
+      <h2>${esc(item.title)}</h2>
+      ${facts.length ? `<dl class="facts">${facts.join("")}</dl>` : ""}
+      ${item.plot ? `<p class="plot">${esc(item.plot)}</p><button class="more" type="button" hidden>მეტის ნახვა</button>` : ""}
+      ${quotesHtml(item)}
+      <div class="q">
+        <div class="qhead"><h3>კითხვები</h3><span class="count">0</span><span class="qline"></span></div>
+        <div class="strip">
+          <p class="hint">ფოტოები ჯერ არ არის დამატებული.</p>
+          <button class="add" type="button"><i>+</i>ფოტოს დამატება</button>
+        </div>
+        <input type="file" accept="image/*" multiple hidden>
+      </div>
+    </div>`;
+  $(".pcol", sec).appendChild(poster(item, i));
+
+  const strip = $(".strip", sec), addBtn = $(".add", sec), input = $("input", sec), hint = $(".hint", sec), count = $(".q .count", sec);
+  const refresh = () => {
+    const tiles = strip.querySelectorAll(".tile");
+    count.textContent = tiles.length; hint.hidden = tiles.length > 0;
+    tiles.forEach((t, k) => $(".n", t).textContent = pad(k + 1));
+  };
+  const gather = () => [...strip.querySelectorAll(".thumb img")].map(x => x.src);
+
+  function tile(src, id){
+    const t = el("div", "tile");
+    const b = el("button", "thumb"); b.type = "button"; b.setAttribute("aria-label", "ფოტოს გახსნა");
+    const im = new Image(); im.src = src; im.alt = item.title + " – კითხვები"; im.loading = "lazy";
+    b.appendChild(im);
+    b.onclick = () => { const l = gather(); openLb(l, l.indexOf(im.src), item.title); };
+    t.appendChild(b); t.appendChild(el("span", "n"));
+    if (id != null) {
+      const d = el("button", "del", "&times;"); d.type = "button"; d.title = "წაშლა"; d.setAttribute("aria-label", "ფოტოს წაშლა");
+      d.onclick = async e => { e.stopPropagation(); if (!confirm("წავშალო ეს ფოტო?")) return; await dbDel(id); t.remove(); refresh(); };
+      t.appendChild(d);
+    }
+    strip.insertBefore(t, addBtn); refresh();
+  }
+
+  const probe = (path, ok, fail) => { const x = new Image(); x.onload = () => ok(path); x.onerror = fail; x.src = path; };
+  (function next(n){
+    const base = `images/${item.slug}/q${n}`;
+    probe(base + ".jpg", p => { tile(p); next(n + 1); },
+      () => probe(base + ".png", p => { tile(p); next(n + 1); }, loadSaved));
+  })(1);
+  function loadSaved(){
+    dbList(item.slug).then(rows => rows.sort((a, b) => a.t - b.t).forEach(r => tile(URL.createObjectURL(r.blob), r.id))).catch(() => {});
+  }
+
+  addBtn.onclick = () => input.click();
+  input.onchange = async () => {
+    for (const f of input.files) {
+      try { const id = await dbAdd(item.slug, f); tile(URL.createObjectURL(f), id); }
+      catch (e) { tile(URL.createObjectURL(f)); }
+    }
+    input.value = "";
+  };
+
+  const plot = $(".plot", sec), more = $(".more", sec);
+  if (plot) {
+    const check = () => { if (!plot.classList.contains("open")) more.hidden = !(plot.scrollHeight > plot.clientHeight + 2); };
+    requestAnimationFrame(check); window.addEventListener("resize", check);
+    more.onclick = () => { const o = plot.classList.toggle("open"); more.textContent = o ? "ნაკლების ნახვა" : "მეტის ნახვა"; more.hidden = false; };
+  }
+  return sec;
+}
+
+/* ---------- გვერდის აწყობა ---------- */
+const list = $("#list"), chips = $("#chips"), empty = $("#empty"), q = $("#q"), wall = $("#wall");
+ITEMS.forEach((it, i) => {
+  list.appendChild(build(it, i));
+  const m = el("button", "mini"); m.type = "button"; m.setAttribute("aria-label", it.title);
+  m.appendChild(poster(it, i));
+  m.onclick = () => { const s = $("#e" + i); if (s.hidden) { setType("ყველა"); q.value = ""; apply(); } s.scrollIntoView({ behavior: "smooth", block: "start" }); };
+  wall.appendChild(m);
+});
+
+const types = ["ყველა", ...new Set(ITEMS.map(i => i.type))];
+let activeType = "ყველა";
+function setType(t){ activeType = t; chips.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x.dataset.t === t)); }
+types.forEach(t => {
+  const b = el("button", "chip", esc(t)); b.type = "button"; b.dataset.t = t; b.setAttribute("aria-pressed", t === activeType);
+  b.onclick = () => { setType(t); apply(); };
+  chips.appendChild(b);
+});
+function apply(){
+  const term = q.value.trim().toLowerCase(); let shown = 0;
+  list.querySelectorAll(".entry").forEach(a => {
+    const ok = (activeType === "ყველა" || a.dataset.type === activeType) && (!term || a.dataset.search.includes(term));
+    a.hidden = !ok; if (ok) shown++;
+  });
+  empty.classList.toggle("show", shown === 0);
+}
+q.addEventListener("input", apply);
+
+const nBooks = ITEMS.filter(i => i.type === "წიგნი" || i.type === "მოთხრობა").length;
+const nFilms = ITEMS.filter(i => i.type === "ფილმი").length;
+$("#stats").innerHTML =
+  `<div class="stat"><b>${pad(ITEMS.length)}</b><span>ნაწარმოები</span></div>` +
+  `<div class="stat"><b>${pad(nBooks)}</b><span>წიგნი და მოთხრობა</span></div>` +
+  `<div class="stat"><b>${pad(nFilms)}</b><span>ფილმი</span></div>`;
+
+/* ---------- ანიმაცია და პროგრესი ---------- */
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px", threshold: .05 });
+  document.querySelectorAll(".reveal").forEach(n => io.observe(n));
+} else document.querySelectorAll(".reveal").forEach(n => n.classList.add("in"));
+const prog = $("#prog");
+addEventListener("scroll", () => { const h = document.documentElement; prog.style.width = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight) * 100) + "%"; }, { passive: true });
+</script>
+</body>
+</html>
